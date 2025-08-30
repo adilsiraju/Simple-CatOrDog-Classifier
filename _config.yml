@@ -1,2 +1,5 @@
-theme: minima  # Or any theme like jekyll-theme-cayman, etc.
 title: Cat vs Dog Classifier
+description: A simple site to classify cats and dogs using a Deep learning model i built with fastai.
+remote_theme: pages-themes/architect@v0.2.0
+plugins:
+  - jekyll-remote-theme
