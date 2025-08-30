@@ -1,0 +1,43 @@
+---
+title: Cat vs Dog Classifier
+layout: page
+---
+
+<h1>Cat vs Dog Classifier 🐱🐶</h1>
+
+<input id="photo" type="file" accept="image/*">
+<div id="results"></div>
+
+<script type="module">
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+
+  const photo = document.getElementById("photo");
+  const results = document.getElementById("results");
+
+  async function loaded(file) {
+    try {
+      const client = await Client.connect("adilsiraju/cat_vs_dog");
+
+      const result = await client.predict("/predict", {
+        img: file
+      });
+
+      console.log(result.data);
+
+      const label = result.data[0]?.label || "Unknown";
+      results.innerHTML = `
+        <br/>
+        <img src="${URL.createObjectURL(file)}" width="300">
+        <p><b>Prediction:</b> ${label}</p>
+      `;
+    } catch (error) {
+      console.error('Error:', error);
+      results.innerHTML = `<p>Error: ${error.message}</p>`;
+    }
+  }
+
+  photo.addEventListener("change", () => {
+    const file = photo.files[0];
+    if (file) loaded(file);
+  });
+</script>
