@@ -3,10 +3,61 @@ title: Cat vs Dog Classifier
 layout: page
 ---
 
-<!-- <h1>Cat vs Dog Classifier 🐱🐶</h1> -->
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    color: #4a4a4a;
+  }
+  .container {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  input[type="file"] {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    background: #fafafa;
+    cursor: pointer;
+  }
+  input[type="file"]:hover {
+    border-color: #999;
+  }
+  #results {
+    margin-top: 20px;
+  }
+  #results img {
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  p {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  .error {
+    color: red;
+  }
+</style>
 
-<input id="photo" type="file" accept="image/*">
-<div id="results"></div>
+<div class="container">
+  <h1>Cat vs Dog Classifier 🐱🐶</h1>
+  <p>Upload an image of a cat or dog to get a prediction!</p>
+
+  <input id="photo" type="file" accept="image/*">
+  <div id="results"></div>
+</div>
 
 <script type="module">
   import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
@@ -16,6 +67,7 @@ layout: page
 
   async function loaded(file) {
     try {
+      results.innerHTML = "<p>Processing...</p>";
       const client = await Client.connect("adilsiraju/cat_vs_dog");
 
       const result = await client.predict("/predict", {
@@ -26,13 +78,12 @@ layout: page
 
       const label = result.data[0]?.label || "Unknown";
       results.innerHTML = `
-        <br/>
-        <img src="${URL.createObjectURL(file)}" width="300">
-        <p><b>Prediction:</b> ${label}</p>
+        <img src="${URL.createObjectURL(file)}" width="300" alt="Uploaded image">
+        <p><strong>Prediction:</strong> ${label}</p>
       `;
     } catch (error) {
       console.error('Error:', error);
-      results.innerHTML = `<p>Error: ${error.message}</p>`;
+      results.innerHTML = `<p class="error">Error: ${error.message}</p>`;
     }
   }
 
