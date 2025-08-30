@@ -1,1 +1,2 @@
-theme: jekyll-theme-cayman  # Or any theme like jekyll-theme-cayman, etc.
+theme: minima  # Or any theme like jekyll-theme-cayman, etc.
+title: Cat vs Dog Classifier
